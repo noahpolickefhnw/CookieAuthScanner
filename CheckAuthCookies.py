@@ -85,6 +85,7 @@ def find_admin_pages(url):
         output = subprocess.check_output(command, stderr=subprocess.STDOUT, text=True)
         if "FOUND: 0" in output:
             print("Es wurden keine Unterseiten gefunden für: ", url)
+            find_xss_vuln(url)
             check_set_cookie(url)
             check_authentication_methods(url)  
         else:
