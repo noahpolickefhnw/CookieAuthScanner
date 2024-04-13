@@ -42,7 +42,11 @@ def split_ip_range(ip_range):
 
 #Scan IP and Portrange with NMAP
 def scan_ip_range(ip_range, port_range="80,443"):
-    ips = split_ip_range(ip_range)
+    if '-' in ip_range:
+        ips = split_ip_range(ip_range)
+    else:
+        ips = [ip_range]
+    
     for ip in ips:
         command = ["nmap", "-p", port_range, str(ip)]
         try:
@@ -171,7 +175,11 @@ def check_authentication_methods(url):
 
         # Auf redirects prüfen
         if response.history:
-            print("Die Webseite leitet nach dem Login um")
+            print("Redirects wurden gefunden")
+            for resp in response.history:
+                print("Umleitung zu:", resp.url)
+        else:
+            print("Keine Redirects gefunden")
 
 
     except requests.RequestException as e:
